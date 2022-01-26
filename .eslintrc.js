@@ -9,7 +9,7 @@ module.exports = {
     es2021: true,
   },
   rules: {
-    complexity: ['error', { max: 5 }],
+    complexity: ['error', { max: 10 }],
     'react/prop-types': ['off'],
   },
 };
