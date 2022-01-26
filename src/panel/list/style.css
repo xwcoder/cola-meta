@@ -1,0 +1,21 @@
+.list-panel{
+	width: 300px;
+	border-right: 1px #ccc solid;
+}
+.list-panel-group .header {
+	line-height: 2;
+	border-top: 1px solid #ccc;
+	background: #bbb;
+	cursor: pointer;
+}
+.list-panel-item {
+	padding: 0 10px;
+	line-height: 2.5;
+	font-size: 12px;
+	color: #333;
+	cursor: pointer;
+}
+.list-panel-item:hover {
+	border: 1px solid #eddfe2;
+	background: #eed23a;
+}

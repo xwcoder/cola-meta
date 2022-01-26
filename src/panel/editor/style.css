@@ -1,0 +1,17 @@
+.editor-panel {
+	margin: 0 10px;
+	width: 414px;
+}
+.editor-panel .edit-container {
+	margin: 10px 0;
+}
+.editor-panel .highlight {
+	border: 2px solid coral;
+}
+.editor-panel .draggable {
+	cursor: move;
+	border: 1px dashed #4f90d3;
+}
+.editor-panel .active {
+	border: 2px solid red;
+}

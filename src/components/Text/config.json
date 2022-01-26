@@ -1,0 +1,16 @@
+{
+  "type": "Text",
+  "name": "文本",
+  "droppable": false,
+  "defaultProps": {
+    "content": "text"
+  },
+  "defaultStyles": {},
+  "config": [
+    {
+      "key": "content",
+      "label": "文本内容",
+      "type": "input"
+    }
+  ]
+}

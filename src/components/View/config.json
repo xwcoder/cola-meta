@@ -1,0 +1,18 @@
+{
+  "type": "View",
+  "name": "view布局",
+  "droppable": true,
+  "defaultProps": {
+    "hoverClass": "none"
+  },
+  "defaultStyles": {
+    "minHeight": "50px"
+  },
+  "config": [
+    {
+      "key": "hoverClass",
+      "label": "指定按下去的class",
+      "type": "input"
+    }
+  ]
+}

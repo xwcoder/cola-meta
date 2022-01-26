@@ -1,0 +1,52 @@
+{
+  "type": "Button",
+  "name": "按钮",
+  "droppable": false,
+  "defaultProps": {
+    "content": "ok",
+    "size": "default",
+    "type": "default"
+  },
+  "defaultStyles": {},
+  "config": [
+    {
+      "key": "content",
+      "type": "input",
+      "label": "文案"
+    },
+    {
+      "key": "size",
+      "type": "select",
+      "label": "尺寸",
+      "dataSource": [
+        {
+          "label": "default",
+          "value": "default"
+        },
+        {
+          "label": "mini",
+          "value": "mini"
+        }
+      ]
+    },
+    {
+      "key": "type",
+      "type": "select",
+      "label": "主题",
+      "dataSource": [
+        {
+          "label": "default",
+          "value": "default"
+        },
+        {
+          "label": "primary",
+          "value": "primary"
+        },
+        {
+          "label": "warn",
+          "value": "warn"
+        }
+      ]
+    }
+  ]
+}
