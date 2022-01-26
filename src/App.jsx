@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { applyPolyfills, defineCustomElements } from '@tarojs/components/loader';
@@ -16,17 +16,15 @@ applyPolyfills()
     defineCustomElements(window);
   });
 
-export default class App extends Component {
-  render() {
-    return (
-      <div className="container">
-        <DndProvider backend={HTML5Backend}>
-          <ListPanel />
-          <EditorPanel />
-          <ConfigPanel />
-          <CodePanel />
-        </DndProvider>
-      </div>
-    );
-  }
+export default function App() {
+  return (
+    <div className="container">
+      <DndProvider backend={HTML5Backend}>
+        <ListPanel />
+        <EditorPanel />
+        <ConfigPanel />
+        <CodePanel />
+      </DndProvider>
+    </div>
+  );
 }
