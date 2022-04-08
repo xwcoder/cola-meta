@@ -172,7 +172,6 @@ const models = {
 
 const store = init({
   models,
-  // TODO correct any
   plugins: [immerPlugin() as any],
 });
 

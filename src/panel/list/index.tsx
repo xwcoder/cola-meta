@@ -1,19 +1,19 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import DragSource from './drag-source';
+import DragNode from './drag-node';
 import data from './data';
 
 import './style.css';
 
 function Item({ type, name }) {
   return (
-    <DragSource type={type}>
+    <DragNode type={type}>
       <li className="list-panel-item">
         {type}
         :
         {name}
       </li>
-    </DragSource>
+    </DragNode>
   );
 }
 

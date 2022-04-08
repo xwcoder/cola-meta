@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import DndNode from './node';
+import DndNode from './dnd-node';
 import store from '../../store';
 import './style.css';
 
