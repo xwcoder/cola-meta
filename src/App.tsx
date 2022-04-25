@@ -1,14 +1,14 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Layout } from 'antd';
 import { applyPolyfills, defineCustomElements } from '@tarojs/components/loader';
 import ListPanel from './panel/list';
 import EditorPanel from './panel/editor';
 import ConfigPanel from './panel/config';
-import CodePanel from './panel/code';
 
 import '@tarojs/components/dist/taro-components/taro-components.css';
-import './style.css';
+import 'antd/dist/antd.css';
 
 // https://github.com/NervJS/taro/issues/6883
 applyPolyfills()
@@ -16,15 +16,34 @@ applyPolyfills()
     defineCustomElements(window);
   });
 
+const {
+  Sider,
+  Content,
+} = Layout;
+
 export default function App() {
   return (
-    <div className="container">
-      <DndProvider backend={HTML5Backend}>
-        <ListPanel />
-        <EditorPanel />
-        <ConfigPanel />
-        <CodePanel />
-      </DndProvider>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <Layout>
+        <Sider
+          theme="light"
+          collapsible
+          collapsedWidth={0}
+        >
+          <ListPanel />
+        </Sider>
+        <Layout>
+          <Content>
+            <EditorPanel />
+          </Content>
+        </Layout>
+        <Sider
+          theme="light"
+          collapsible
+        >
+          <ConfigPanel />
+        </Sider>
+      </Layout>
+    </DndProvider>
   );
 }
