@@ -9,6 +9,7 @@ import ConfigPanel from './panel/config';
 
 import '@tarojs/components/dist/taro-components/taro-components.css';
 import 'antd/dist/antd.css';
+import './style.css';
 
 // https://github.com/NervJS/taro/issues/6883
 applyPolyfills()
@@ -17,6 +18,7 @@ applyPolyfills()
   });
 
 const {
+  Header,
   Sider,
   Content,
 } = Layout;
@@ -25,24 +27,31 @@ export default function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout>
-        <Sider
-          theme="light"
-          collapsible
-          collapsedWidth={0}
+        <Header
+          className="nav"
         >
-          <ListPanel />
-        </Sider>
+          cola-meta
+        </Header>
         <Layout>
+          <Sider
+            theme="light"
+            collapsible
+            collapsedWidth={0}
+          >
+            <ListPanel />
+          </Sider>
           <Content>
             <EditorPanel />
           </Content>
+          <Sider
+            theme="light"
+            collapsible
+            collapsedWidth={0}
+            reverseArrow
+          >
+            <ConfigPanel />
+          </Sider>
         </Layout>
-        <Sider
-          theme="light"
-          collapsible
-        >
-          <ConfigPanel />
-        </Sider>
       </Layout>
     </DndProvider>
   );
