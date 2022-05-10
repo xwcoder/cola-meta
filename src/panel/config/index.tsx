@@ -1,17 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CONFIGS } from '../../components';
-import store from '../../store';
+import { RootState, Dispatch } from '../../store';
 import ConfigForm from './config-form';
 
 import './style.css';
 
-function handleRemove() {
-  store.dispatch.global.removeCurrent();
-}
-
-function Config({ node }) {
-  const type = node ? node.type : '';
+export default function Config() {
+  const dispatch = useDispatch<Dispatch>();
+  const node = useSelector((state: RootState) => state.nodes.currentItem);
+  const type = node?.type || '';
   return (
     <section className="config-panel">
       <header>
@@ -21,7 +19,7 @@ function Config({ node }) {
       <div className="config-area">
         <button
           type="button"
-          onClick={handleRemove}
+          onClick={() => dispatch.nodes.removeCurrent()}
         >
           删除组件
         </button>
@@ -30,9 +28,3 @@ function Config({ node }) {
     </section>
   );
 }
-
-const mapState = (state) => ({
-  node: state.global.currentItem,
-});
-
-export default connect(mapState)(Config);

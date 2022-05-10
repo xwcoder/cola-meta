@@ -3,10 +3,11 @@
 /* eslint-disable react/no-find-dom-node */
 import React from 'react';
 import { findDOMNode } from 'react-dom';
+import { useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import { useDrag, useDrop } from 'react-dnd';
 import Components, { CONFIGS } from '../../components';
-import store from '../../store';
+import { Dispatch, VNode } from '../../store';
 
 function parseStyles(styles) {
   const reg = /\B([A-Z])/g;
@@ -23,20 +24,25 @@ function parseStyles(styles) {
   return res;
 }
 
-function handleClick(event, { id, parentId }) {
+function handleClick(event, { id, parentId, dispatch }) {
   event.stopPropagation();
   document.querySelectorAll('.highlight').forEach((element) => {
     element.classList.remove('highlight');
   });
   document.getElementById(id)!.classList.add('highlight');
 
-  store.dispatch.global.setCurrentData({ id, parentId });
+  dispatch.nodes.setCurrentData({ id, parentId });
 }
 
-export default function DndNode(props) {
+interface Props {
+  item: VNode
+  // eslint-disable-next-line react/require-default-props
+  parentId?: number
+}
+
+export default function DndNode(props: Props) {
+  const dispatch = useDispatch<Dispatch>();
   const {
-    canDrop,
-    isOver,
     parentId,
     item,
   } = props;
@@ -62,7 +68,7 @@ export default function DndNode(props) {
     end(_, monitor) {
       const result = monitor.getDropResult();
       if (monitor.didDrop() && result) {
-        store.dispatch.global.move({
+        dispatch.nodes.move({
           dragItem: {
             id,
             parentId,
@@ -75,7 +81,7 @@ export default function DndNode(props) {
     },
   }));
 
-  const [, drop] = useDrop(() => ({
+  const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'component-item',
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
@@ -115,7 +121,7 @@ export default function DndNode(props) {
         drag(drop(node as any));
       }}
       {...finalProps}
-      onClick={(event) => handleClick(event, { id, parentId })}
+      onClick={(event) => handleClick(event, { id, parentId, dispatch })}
     >
       {children && children.length
         ? children.map((node) => <DndNode key={node.id} parentId={id} item={node} />)

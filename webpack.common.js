@@ -3,6 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WindiCSSWebpackPlugin = require('windicss-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -42,5 +43,6 @@ module.exports = {
       minify: true,
     }),
     new webpack.ProgressPlugin(),
+    new WindiCSSWebpackPlugin(),
   ],
 };

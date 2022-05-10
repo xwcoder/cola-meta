@@ -5,33 +5,36 @@ module.exports = {
     'plugin:sonarjs/recommended',
   ],
   plugins: [
-    'sonarjs',
     '@typescript-eslint',
+    'sonarjs',
   ],
   env: {
     browser: true,
     es2021: true,
   },
   settings: {
-    'import/extensions': [
-      '.js',
-      '.jsx',
-      '.ts',
-      '.tsx',
-    ],
     'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
+      node: {
+        extensions: [
+          '.js',
+          '.jsx',
+          '.ts',
+          '.tsx',
+        ],
       },
     },
   },
   rules: {
     complexity: ['error', { max: 10 }],
-    'react/prop-types': ['off'],
-    'react/jsx-filename-extension': [
+    'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
+    'import/no-extraneous-dependencies': [
       'error',
       {
-        extensions: ['.tsx', '.jsx'],
+        devDependencies: [
+          'windi.config.ts',
+          '**/*.test.js',
+          '**/*.spec.js',
+        ],
       },
     ],
     'import/extensions': [
@@ -44,5 +47,6 @@ module.exports = {
         json: 'always',
       },
     ],
+    'import/prefer-default-export': ['off'],
   },
 };

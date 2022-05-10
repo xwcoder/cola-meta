@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
+import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
-import store from '../../store';
+import { Dispatch } from '../../store';
 
-export default function DragNode({ type, children }) {
+type Props = PropsWithChildren<{
+  type: string
+}>;
+
+export default function DragNode({ type, children }: Props) {
+  const dispatch = useDispatch<Dispatch>();
+
   const [, drag] = useDrag(() => ({
     type: 'component-item',
     item: { type },
@@ -10,7 +17,7 @@ export default function DragNode({ type, children }) {
       const result = monitor.getDropResult();
 
       if (monitor.didDrop() && result) {
-        store.dispatch.global.add({ id: (result as any).id, type });
+        dispatch.nodes.add({ id: (result as any).id, type });
       }
     },
   }), []);

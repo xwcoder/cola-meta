@@ -7,10 +7,6 @@ import ListPanel from './panel/list';
 import EditorPanel from './panel/editor';
 import ConfigPanel from './panel/config';
 
-import '@tarojs/components/dist/taro-components/taro-components.css';
-import 'antd/dist/antd.css';
-import './style.css';
-
 // https://github.com/NervJS/taro/issues/6883
 applyPolyfills()
   .then(() => {

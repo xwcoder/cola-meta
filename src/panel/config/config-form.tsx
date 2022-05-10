@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CONFIGS } from '../../components';
-import store from '../../store';
+import { RootState, Dispatch } from '../../store';
 
-function ConfigForm({ item }) {
+export default function ConfigForm() {
+  const dispatch = useDispatch<Dispatch>();
+  const item = useSelector((state: RootState) => state.nodes.currentItem)!;
   const { type } = item;
   const configs = CONFIGS[type].config;
 
@@ -12,7 +14,7 @@ function ConfigForm({ item }) {
     const { key } = event.target.dataset;
     const { value } = event.target;
 
-    store.dispatch.global.updateCurrentProps({ [key]: value });
+    dispatch.nodes.updateCurrentProps({ [key]: value });
   }
 
   const renderByType = (config) => {
@@ -97,9 +99,3 @@ function ConfigForm({ item }) {
     </div>
   );
 }
-
-const mapState = (state) => ({
-  item: state.global.currentItem,
-});
-
-export default connect(mapState)(ConfigForm);

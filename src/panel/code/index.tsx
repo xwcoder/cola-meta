@@ -1,10 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import genCode from './gencode';
 
 import './style.css';
 
-function CodePanel({ root }) {
+export default function CodePanel() {
+  const root = useSelector((state: RootState) => state.nodes.root);
   return (
     <section className="code-panel">
       <header>代码预览区</header>
@@ -18,9 +20,3 @@ function CodePanel({ root }) {
     </section>
   );
 }
-
-const mapState = (state) => ({
-  root: state.global.root,
-});
-
-export default connect(mapState)(CodePanel);
