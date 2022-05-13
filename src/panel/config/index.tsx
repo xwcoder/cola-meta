@@ -4,11 +4,9 @@ import { CONFIGS } from '../../components';
 import { RootState, Dispatch } from '../../store';
 import ConfigForm from './config-form';
 
-import './style.css';
-
 export default function Config() {
   const dispatch = useDispatch<Dispatch>();
-  const node = useSelector((state: RootState) => state.nodes.currentItem);
+  const node = useSelector((state: RootState) => state.nodes.currentNode);
   const type = node?.type || '';
   return (
     <section className="config-panel">

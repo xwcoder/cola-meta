@@ -1,37 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createModel } from '@rematch/core';
 import type { RootModel } from '.';
+import { VNode } from '../types';
 import { CONFIGS } from '../components';
 
-export interface VNode {
-  id: number
-  type: string
-  props: object
-  styles?: object
-  class?: object
-  children?: VNode[]
-}
-
 interface State {
-  root: VNode
-  currentItem: VNode | null
-  currentParentId: number
+  nodes: VNode[]
+  currentNode: VNode | null
 }
 
 const DEFAULT_STATE: State = {
-  root: {
-    id: 1,
-    type: 'View',
-    props: {},
-    styles: {
-      minHeight: '500px',
-    },
-    class: {},
-    children: [],
-  },
-
-  currentItem: null,
-  currentParentId: 0,
+  nodes: [],
+  currentNode: null,
 };
 
 const initstate: State = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -40,52 +20,12 @@ let gid = 1;
 // eslint-disable-next-line no-plusplus
 const genId = () => ++gid;
 
-function findById(root: VNode, id: number): VNode | null {
-  let ans: VNode | null = null;
-  const find = (item: VNode) => {
-    if (item.id === id) {
-      ans = item;
-      return;
-    }
-
-    const { children = [] } = item;
-    for (let i = 0; i < children.length; i += 1) {
-      find(children[i]);
-    }
-  };
-
-  find(root);
-
-  return ans;
-}
-
-function removeNode(root: VNode, id: number, parentId: number) {
-  const parent = findById(root, parentId)!;
-  const { children } = parent!;
-  const index = children!.findIndex((item) => item.id === id);
-
-  children!.splice(index, 1);
-}
-
 export const nodes = createModel<RootModel>()({
   state: {
     ...initstate,
   },
 
   reducers: {
-    // TODO to be delete, 暂不支持楼层嵌套
-    add({ root }, { id, type }: { id: number, type: string }) {
-      const node = findById(root, id)!;
-      node.children = node.children || [];
-
-      node.children.push({
-        id: genId(),
-        type,
-        props: CONFIGS[type].defaultProps || {},
-        styles: CONFIGS[type].defaultStyles || {},
-      });
-    },
-
     reset() {
       gid = 1;
       return {
@@ -93,77 +33,73 @@ export const nodes = createModel<RootModel>()({
       };
     },
 
-    // TODO
-    move({ root }, { dragItem, dropItem }) {
-      const {
-        id: dragId,
-        parentId: dragParentId,
-      } = dragItem;
-
-      const {
-        id: dropId,
-        type: dropType,
-        parentId: dropParentId,
-      } = dropItem;
-
-      const sourceItem = { ...findById(root, dragId)! };
-      const { droppable } = CONFIGS[dropType];
-
-      if (droppable) {
-        const item = findById(root, dropId)!;
-        item.children = item.children || [];
-        removeNode(root, dragId, dragParentId);
-        item.children.push(sourceItem);
-      } else {
-        const dropParentItem = findById(root, dropParentId)!;
-        const { children } = dropParentItem;
-        const index = children!.findIndex((item) => item.id === dropId);
-        removeNode(root, dragId, dragParentId);
-        children!.splice(index, 0, sourceItem);
-      }
+    add(state, { type, index }: { type: string, index: number }) {
+      const node = {
+        id: genId(),
+        type,
+        props: CONFIGS[type].defaultProps || {},
+        styles: CONFIGS[type].defaultStyles || {},
+      };
+      state.nodes.splice(index, 0, node);
     },
 
-    setCurrentData(state, { id, parentId }: { id: number, parentId: number}) {
-      const { root } = state;
-      const item = findById(root, id);
+    move(state, { node, index }: { node: VNode, index: number}) {
+      const lastIndex = state.nodes.findIndex((v) => v.id === node.id);
 
-      state.currentItem = item;
-      state.currentParentId = parentId;
-    },
-
-    removeCurrent(state) {
-      const {
-        currentItem,
-        currentParentId,
-        root,
-      } = state;
-
-      if (!currentItem) {
+      if (lastIndex === index) {
         return;
       }
 
-      removeNode(root, currentItem.id, currentParentId);
-      state.currentItem = null;
+      if (index > lastIndex) {
+        state.nodes.splice(index, 0, node);
+        state.nodes.splice(lastIndex, 1);
+      } else {
+        state.nodes.splice(lastIndex, 1);
+        state.nodes.splice(index, 0, node);
+      }
     },
 
-    updateCurrentProps(state, props: object) {
-      const { currentItem, root } = state;
+    setCurrentNode(state, id: number) {
+      const node = state.nodes.find((v) => v.id === id);
 
-      if (!currentItem) {
+      if (node) {
+        state.currentNode = node;
+      }
+    },
+
+    removeCurrent({ currentNode, nodes: list }) {
+      if (!currentNode) {
+        return;
+      }
+
+      const index = list.findIndex((v) => v.id === currentNode.id);
+      if (index === -1) {
+        return;
+      }
+
+      list.splice(index, 1);
+    },
+
+    updateCurrentProps({ currentNode, nodes: list }, props: object) {
+      if (!currentNode) {
         return;
       }
 
       const polyProps = {
-        ...(currentItem.props || {}),
+        ...(currentNode.props || {}),
         ...props,
       };
 
-      currentItem.props = {
+      currentNode.props = {
         ...polyProps,
       };
 
-      const item = findById(root, currentItem.id)!;
-      item.props = {
+      const node = list.find((v) => v.id === currentNode.id);
+      if (!node) {
+        return;
+      }
+
+      node.props = {
         ...polyProps,
       };
     },

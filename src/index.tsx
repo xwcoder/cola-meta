@@ -10,6 +10,8 @@ import 'antd/dist/antd.css';
 import 'windi.css';
 import './style.css';
 
+(window as any).store = store;
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

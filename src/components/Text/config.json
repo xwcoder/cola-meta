@@ -1,7 +1,6 @@
 {
   "type": "Text",
   "name": "文本",
-  "droppable": false,
   "defaultProps": {
     "content": "text"
   },

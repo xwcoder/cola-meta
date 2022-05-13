@@ -1,12 +1,14 @@
 {
   "type": "View",
   "name": "view布局",
-  "droppable": true,
   "defaultProps": {
     "hoverClass": "none"
   },
   "defaultStyles": {
-    "minHeight": "50px"
+    "minHeight": "50px",
+    "borderWidth": "1px",
+    "borderStyle": "solid",
+    "borderColor": "green"
   },
   "config": [
     {

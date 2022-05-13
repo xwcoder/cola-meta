@@ -6,7 +6,7 @@ import { RootState, Dispatch } from '../../store';
 
 export default function ConfigForm() {
   const dispatch = useDispatch<Dispatch>();
-  const item = useSelector((state: RootState) => state.nodes.currentItem)!;
+  const item = useSelector((state: RootState) => state.nodes.currentNode)!;
   const { type } = item;
   const configs = CONFIGS[type].config;
 
@@ -87,7 +87,7 @@ export default function ConfigForm() {
   };
 
   return (
-    <div className="form-container">
+    <div className="my-5 p-4">
       <h3>组件属性配置</h3>
       <form>
         {configs.map((config) => (

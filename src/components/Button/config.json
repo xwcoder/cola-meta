@@ -1,7 +1,6 @@
 {
   "type": "Button",
   "name": "按钮",
-  "droppable": false,
   "defaultProps": {
     "content": "ok",
     "size": "default",
